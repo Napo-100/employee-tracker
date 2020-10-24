@@ -1,7 +1,7 @@
 const { prompt } = require('inquirer');
 //const connection = require('./db/connection')
 const cTable = require('console.table');
-const db = require('./db/database')
+const db = require('./db/class')
 
 const mainPrompt = function () {
     prompt([
@@ -10,7 +10,7 @@ const mainPrompt = function () {
             name: 'choice',
             message: 'What would you like to do?',
             choices: [
-                 "View all departments",
+                "View all departments",
                 "View all roles",
                 "View all employees",
                 "Add a department",
@@ -56,6 +56,20 @@ const viewDepartments = function () {
     db.viewDepartments().then(([rows]) => {
         let departments = rows
         console.table(departments)
+    }).then(() => mainPrompt())
+};
+
+const viewRoles = function () {
+    db.viewRoles().then(([rows]) => {
+        let roles = rows
+        console.table(roles)
+    }).then(() => mainPrompt())
+};
+
+const viewEmployees = function () {
+    db.viewEmployees().then(([rows]) => {
+        let employees = rows
+        console.table(employees)
     }).then(() => mainPrompt())
 };
 
