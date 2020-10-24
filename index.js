@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const connection = require('./db/connection')
 const cTable = require('console.table');
 
-let questions = [
+let mainPrompt = [
     {
         type: 'list',
         name: 'prompt',
@@ -19,7 +19,24 @@ let questions = [
     },
 ];
 
-inquirer.prompt(questions).then((choice) => {
+let deptAdd = [
+    {
+        type: 'input',
+        name: 'department',
+        message: 'What is the name of the department you would like to add?',
+        validate: departmentInput => {
+            if (departmentInput) {
+                console.log(input + "added to departments")
+                return true;
+            } else {
+                console.log('No department added');
+                inquirer.prompt(mainPrompt);
+            }
+        }
+    }
+]
+
+inquirer.prompt(mainPrompt).then((choice) => {
     switch (choice.prompt) {
         case "View all departments":
             viewDepartments();
@@ -54,7 +71,8 @@ const viewDepartments = function () {
                 return;
             }
             console.table(results);
-           inquirer.prompt(questions);
+            inquirer.prompt(mainPrompt);
+        
         }
     )
 };
@@ -68,7 +86,8 @@ const viewRoles = function () {
                 return;
             }
             console.table(results);
-            inquirer.prompt(questions);
+            inquirer.prompt(mainPrompt);
+            return;
         }
     )
 };
@@ -82,7 +101,27 @@ const viewEmployees = function () {
                 return;
             }
             console.table(results);
-            inquirer.prompt(questions);
+            inquirer.prompt(mainPrompt);
+            return;
         }
     )
 };
+
+const addDepartment = function () {
+    connection.query(
+        inquirer.prompt(deptAdd).then((input) => {
+            "INSERT INTO departments " + input.prompt,
+                function (err, results) {
+                    if (err) {
+                        console.log(err)
+                        return;
+                    }
+                    console.table(results);
+                    inquirer.prompt(mainPrompt)
+
+                }
+        }
+        )
+
+    )
+}
