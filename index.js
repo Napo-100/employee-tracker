@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('./db/connection')
+const cTable = require('console.table');
 
 let questions = [
     {
@@ -8,7 +9,7 @@ let questions = [
         message: 'What would you like to do?',
         choices: [
             "View all departments",
-            "view all roles",
+            "View all roles",
             "View all employees",
             "Add a department",
             "Add a role",
@@ -43,3 +44,45 @@ inquirer.prompt(questions).then((choice) => {
             break;
     }
 });
+
+const viewDepartments = function () {
+    connection.query(
+        "SELECT * FROM departments",
+        function (err, results) {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            console.table(results);
+           inquirer.prompt(questions);
+        }
+    )
+};
+
+const viewRoles = function () {
+    connection.query(
+        "SELECT * FROM roles",
+        function (err, results) {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            console.table(results);
+            inquirer.prompt(questions);
+        }
+    )
+};
+
+const viewEmployees = function () {
+    connection.query(
+        "SELECT * FROM employees",
+        function (err, results) {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            console.table(results);
+            inquirer.prompt(questions);
+        }
+    )
+};
