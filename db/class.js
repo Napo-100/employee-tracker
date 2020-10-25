@@ -6,7 +6,8 @@ class DB {
     }
 
     viewDepartments() {
-        return this.connection.promise().query(`SELECT * FROM departments`);
+        return this.connection.promise().query(`SELECT d.id AS 'department id', d.name
+                                                FROM departments AS d`);
     }
 
     viewRoles() {
