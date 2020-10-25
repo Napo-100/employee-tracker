@@ -19,7 +19,7 @@ class DB {
     }
 
     viewEmployees() {
-        return this.connection.promise().query(`SELECT CONCAT(e.firstName," ", e.lastName) AS 'name', 
+        return this.connection.promise().query(`SELECT CONCAT(e.firstName," ", e.lastName) AS 'firt name   last name', 
                                                 r.title AS 'role', r.salary, 
                                                 CONCAT(e2.firstName," ", e2.lastName) AS 'manager name'
                                                 FROM employees AS e
