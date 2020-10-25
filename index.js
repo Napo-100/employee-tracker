@@ -103,7 +103,7 @@ const quitApp = function () {
 
 
 
-cfonts.say("Middle Earth Manager!", {
+cfonts.say(" Middle Earth \n    Manager!    ", {
     font: "pallet",
     align: "left",
     colors: ["yellow", "cyanBright"],
