@@ -6,7 +6,7 @@ class DB {
     }
 
     viewDepartments() {
-        return this.connection.promise().query(`SELECT d.id AS 'department id', d.name
+        return this.connection.promise().query(`SELECT d.id AS 'dept id', d.name
                                                 FROM departments AS d`);
     }
 
@@ -20,7 +20,8 @@ class DB {
 
     viewEmployees() {
         return this.connection.promise().query(`SELECT CONCAT(e.firstName," ", e.lastName) AS 'name', 
-                                                r.title AS 'role', r.salary, CONCAT(e2.firstName," ", e2.lastName) AS 'manager name'
+                                                r.title AS 'role', r.salary, 
+                                                CONCAT(e2.firstName," ", e2.lastName) AS 'manager name'
                                                 FROM employees AS e
                                                 LEFT JOIN roles AS r
                                                 ON e.roleId = r.id
