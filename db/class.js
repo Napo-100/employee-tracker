@@ -11,7 +11,7 @@ class DB {
     }
 
     viewRoles() {
-        return this.connection.promise().query(`SELECT r.title, r.salary, d.name AS 'department name' 
+        return this.connection.promise().query(`SELECT r.id AS 'role_id', r.title, r.salary, d.name AS 'department name' 
                                                 FROM roles AS r 
                                                 LEFT JOIN departments AS d 
                                                 ON r.deptId = d.id`
