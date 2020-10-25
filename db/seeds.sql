@@ -1,4 +1,4 @@
-INSERT INTO departments (dept_name)
+INSERT INTO departments (name)
 VALUES 
 ("Middle Earth"),
 ("The Shire"),
@@ -7,7 +7,7 @@ VALUES
 ("Khazad-dum"),
 ("Mordor");
 
-INSERT INTO roles (empl_title, empl_salary, dept_id)
+INSERT INTO roles (title, salary, deptId)
 VALUES 
 ("Wizard", 100000.00, 1),
 ("Hobbit", 50000.00, 2),
@@ -16,7 +16,7 @@ VALUES
 ("Dwarf", 150000.00, 5),
 ("Evil", 20000.00, 6);
 
-INSERT INTO employees (first_name, last_name, role_id, manager_id)
+INSERT INTO employees (firstName, lastName, roleId, managerId)
 VALUES 
 ("Gandalf", "Grey Beard", 1, null),
 ("Sauron", "The Deceiver", 6, null),

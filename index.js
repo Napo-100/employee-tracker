@@ -1,4 +1,5 @@
 const { prompt } = require('inquirer');
+const cfonts = require('cfonts');
 //const connection = require('./db/connection')
 const cTable = require('console.table');
 const db = require('./db/class')
@@ -21,7 +22,7 @@ const mainPrompt = function () {
             ]
         }
     ]).then(res => {
-        let choice = res.choice      
+        let choice = res.choice
         switch (choice) {
             case "View all departments":
                 viewDepartments();
@@ -73,74 +74,49 @@ const viewEmployees = function () {
     }).then(() => mainPrompt())
 };
 
+const addDepartment = function () {
+    prompt([
+        {
+            type: 'input',
+            name: 'department',
+            message: 'Enter a department name',
+        },
+    ]).then((res) => {
+        db.addDepartment({
+            name: res.department
+        })
+            .then(() => {
+                console.log(`\nNew department ${res.department} successfully added!\n`)
+                
+                mainPrompt()
+            })
+    })
+};
+
+
 const quitApp = function () {
     process.exit()
 }
 
-// const viewRoles = function () {
-//     connection.query(
-//         "SELECT * FROM roles",
-//         function (err, results) {
-//             if (err) {
-//                 console.log(err)
-//                 return;
-//             }
-//             console.table(results);
-//             // inquirer.prompt(mainPrompt);
-
-//         }
-//     )
-// };
-
-// const viewEmployees = function () {
-//     connection.query(
-//         "SELECT * FROM employees",
-//         function (err, results) {
-//             if (err) {
-//                 console.log(err)
-//                 return;
-//             }
-//             console.table(results);
-//             // inquirer.prompt(mainPrompt);
-
-//         }
-//     )
-// };
 
 
 
-// const addDepartment = () => {
-//     inquirer
-//         .prompt([
-//             {
-//                 type: "input",
-//                 name: "department",
-//                 message: 'What is the name of the department you would like to add?',
-//                 // validate: departmentInput => {
-//                 //     if (departmentInput) {
-//                 //         console.log("added a department")
-//                 //         return true;
-//                 //     } else {
-//                 //         console.log('No department added');
-//                         inquirer.prompt(mainPrompt);
-//                 //     }
-//                 // }
-//             }
-//         ])
-//         .then((department) => {
-//             connection.query(
-//                 "INSERT into department",
-//                 {
-//                     department
-//                 },
-//                 function (err, results) {
-//                     if (err) throw err;
-//                     console.table(results.affectedRows + " department inserted!\n");
-//                     // Call addDepartment() AFTER the INSERT completes
-//                     addDepartment();
-//                 }
-//             );
-//         });
-// };
+
+
+cfonts.say("Middle Earth Manager!", {
+    font: "pallet",
+    align: "left",
+    colors: ["yellow", "cyanBright"],
+    background: "transparent",
+    letterSpacing: 1,
+    lineHeight: 1,
+    space: true,
+    maxLength: "0",
+    gradient: true,
+    independentGradient: false,
+    transitionGradient: false,
+    env: "node",
+});
 
 mainPrompt();
+
