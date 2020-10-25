@@ -94,74 +94,80 @@ const addDepartment = function () {
 };
 
 const addRole = function () {
-    prompt([
-        {
-            type: 'input',
-            name: 'title',
-            message: 'Enter the title for the role',
-        },
-        {
-            type: 'input',
-            name: 'salary',
-            message: 'Enter the salary for the role',
-        },
-        {
-            type: 'input',
-            name: 'department',
-            message: 'Enter the department id for the role',
-        },
-    ]).then((res) => {
-        db.addRole({
-            title: res.title,
-            salary: res.salary,
-            deptId: res.department,
+    db.viewDepartments().then(([rows]) => {
+        const department = rows.map(({ dept_Id, name }) => ({ name: name, value: dept_Id }))
+
+        prompt([
+            {
+                type: 'input',
+                name: 'title',
+                message: 'Enter the title for the role',
+            },
+            {
+                type: 'input',
+                name: 'salary',
+                message: 'Enter the salary for the role',
+            },
+            {
+                type: 'list',
+                name: 'deptId',
+                message: 'Choose a department for this role',
+                choices: department
+            },
+        ]).then((res) => {
+            db.addRole(res)
+                .then(() => {
+                    console.log(`\nNew role ${res.title} successfully added!\n`)
+
+                    mainPrompt()
+                })
         })
-            .then(() => {
-                console.log(`\nNew role ${res.title} successfully added!\n`)
-
-                mainPrompt()
-            })
-    })
-};
-
-
-const addEmployee = function () {
-    prompt([
-        {
-            type: 'input',
-            name: 'firstName',
-            message: 'Enter the first name of the employee',
-        },
-        {
-            type: 'input',
-            name: 'lastName',
-            message: 'Enter the last name of the employee',
-        },
-        {
-            type: 'list',
-            name: 'role',
-            message: 'choose a role for the employee',
-        },
-        {
-            type: 'list',
-            name: 'manager',
-            message: 'choose a manager for the employee',
-        },
-    ]).then((res) => {
-        db.addRole({
-            firstName: res.firstName,
-            lastName: res.lastName,
-            roleId: res.role,
-            managerId: res.manager,
-        })
-            .then(() => {
-                console.log(`\nNew employee ${res.firstName}" "${res.lastName}" " successfully added!\n`)
-
-                mainPrompt()
-            })
     })
 }
 
+
+const addEmployee = function () {
+    db.roleQuery().then(([rows]) => {
+        const roles = rows.map(({ id, title }) => ({ name: title, value: id }))
+
+        db.getManager().then(([rows]) => {
+            const manager = rows.map(({ id, firstName, lastName }) => ({ name: firstName + "   " + lastName, value: id }));
+
+
+            prompt([
+                {
+                    type: 'input',
+                    name: 'firstName',
+                    message: 'Enter the first name of the employee',
+                },
+                {
+                    type: 'input',
+                    name: 'lastName',
+                    message: 'Enter the last name of the employee',
+                },
+                {
+                    type: 'list',
+                    name: 'roleId',
+                    message: 'choose a role for the employee',
+                    choices: roles
+                },
+                {
+                    type: 'list',
+                    name: 'managerId',
+                    message: 'choose a manager for the employee',
+                    choices: manager
+                },
+            ]).then((res) => {
+                db.addEmployee(res)
+                    .then(() => {
+                        console.log(`\nNew employee ${res.firstName}" "${res.lastName}" " successfully added!\n`)
+
+                        mainPrompt()
+                    })
+            })
+        })
+    })
+}
 
 
 
@@ -170,7 +176,7 @@ const addEmployee = function () {
 const updateRole = function () {
     db.roleQuery().then(([rows]) => {
         const roles = rows.map(({ id, title }) => ({ name: title, value: id }))
-        
+
         db.fullNameQuery().then(([rows]) => {
             const empNameList = rows.map(({ id, firstName, lastName }) => ({ name: firstName + " " + lastName, value: id }));
 

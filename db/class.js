@@ -6,7 +6,7 @@ class DB {
     }
 
     viewDepartments() {
-        return this.connection.promise().query(`SELECT d.id AS 'dept id', d.name
+        return this.connection.promise().query(`SELECT d.id AS 'dept_Id', d.name
                                                 FROM departments AS d`);
     }
 
@@ -19,7 +19,7 @@ class DB {
     }
 
     viewEmployees() {
-        return this.connection.promise().query(`SELECT e.id, CONCAT(e.firstName,"   ", e.lastName) AS 'firt name   last name', 
+        return this.connection.promise().query(`SELECT e.id, e.firstName AS 'first name', e.lastName AS 'last name', 
                                                 r.title AS 'title', d.name AS department, r.salary, 
                                                 CONCAT(e2.firstName,"  ", e2.lastName) AS 'manager name'
                                                 FROM employees AS e
@@ -37,12 +37,18 @@ class DB {
         return this.connection.promise().query(`INSERT INTO departments SET ?`, department);
     }
 
-    addRole(role){
-        return this.connection.promise().query(`INSERT INTO roles SET ?`, role);
+    addRole(res){
+        return this.connection.promise().query(`INSERT INTO roles
+                                              (title, salary, deptId)
+                                              VALUES (?, ?, ?)`, 
+                                              [res.title, res.salary, res.deptId]);
     }
 
-    addEmployee(employee){
-        return this.connection.promise().query(`INSERT INTO departments SET ?`, employee);
+    addEmployee(res){
+        return this.connection.promise().query(`INSERT INTO employees 
+                                              (firstName, lastName, roleId, managerId) 
+                                                VALUES (?, ?, ?, ?)`, 
+                                                [res.firstName, res.lastName, res.roleId, res.managerId]);
     }
 
     updateRole(res){
@@ -56,6 +62,10 @@ class DB {
     }
 
     fullNameQuery(){
+        return this.connection.promise().query(`SELECT * FROM employees`)
+    }
+
+    getManager(){
         return this.connection.promise().query(`SELECT * FROM employees`)
     }
 
