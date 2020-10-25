@@ -190,10 +190,7 @@ const updateRole = function () {
 
 
             ]).then((res) => {
-                db.updateRole({
-                    roleId: res.roleUpdate,
-
-                })
+                db.updateRole(res)
                     .then(() => {
                         console.log(`\nNew role successfully added!\n`)
 

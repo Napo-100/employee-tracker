@@ -45,18 +45,18 @@ class DB {
         return this.connection.promise().query(`INSERT INTO departments SET ?`, employee);
     }
 
-    updateRole(){
+    updateRole(res){
         return this.connection.promise().query(`UPDATE employees SET roleId = ? 
-                                                WHERE employees.id = ?`);
+                                                WHERE employees.id = ?`, [res.roleUpdate, res.EmpNameRoleUpdate]);
     }
 
     roleQuery(){
-        return this.connection.prommise().query(`SELECT roles.id, roles.title 
+        return this.connection.promise().query(`SELECT roles.id, roles.title 
                                                 FROM roles`)
     }
 
     fullNameQuery(){
-        return this.connection.prommise().query(`SELECT * FROM employees`)
+        return this.connection.promise().query(`SELECT * FROM employees`)
     }
 
 
