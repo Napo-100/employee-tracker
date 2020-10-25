@@ -126,7 +126,40 @@ const addRole = function () {
 
 
 const addEmployee = function () {
+    prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: 'Enter the first name of the employee',
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: 'Enter the last name of the employee',
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: 'choose a role for the employee',
+        },
+        {
+            type: 'list',
+            name: 'manager',
+            message: 'choose a manager for the employee',
+        },
+    ]).then((res) => {
+        db.addRole({
+            firstName: res.firstName,
+            lastName: res.lastName,
+            roleId: res.role,
+            managerId: res.manager,
+        })
+            .then(() => {
+                console.log(`\nNew employee ${res.firstName}" "${res.lastName}" " successfully added!\n`)
 
+                mainPrompt()
+            })
+    })
 }
 
 
